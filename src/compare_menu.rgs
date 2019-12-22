@@ -1,0 +1,17 @@
+HKCR {
+    NoRemove CLSID {
+        ForceRemove {59D49316-D3FD-425B-A175-41DEB301AB1F} = s 'Compare Menu Shell Extension' {
+            InprocServer32 = s '%MODULE%' {
+                val ThreadingModel = s 'Apartment'
+            }
+        }
+    }
+
+    NoRemove AllFilesystemObjects {
+        NoRemove shell {
+            ForceRemove CompareMenu {
+                val ExplorerCommandHandler = s '{59D49316-D3FD-425B-A175-41DEB301AB1F}'
+            }
+        }
+    }
+}
