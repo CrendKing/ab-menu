@@ -5,26 +5,6 @@
 
 #define CheckHr(expr) { hr = (expr); if (FAILED(hr)) { return hr; } }
 
-CSubCommand::Item CSubCommand::_selectedItem;
-
-auto CSubCommand::Item::ExtractItemAt(IShellItemArray *itemArray, int i) -> HRESULT {
-    HRESULT hr;
-
-    IShellItem *shellItem;
-    CheckHr(itemArray->GetItemAt(i, &shellItem));
-
-    LPWSTR displayName;
-    CheckHr(shellItem->GetDisplayName(SIGDN_FILESYSPATH, &displayName));
-    name = displayName;
-    CoTaskMemFree(displayName);
-
-    SFGAOF itemAttribs;
-    CheckHr(shellItem->GetAttributes(SFGAO_FOLDER, &itemAttribs));
-    isFolder = itemAttribs & SFGAO_FOLDER;
-
-    return S_OK;
-}
-
 auto STDMETHODCALLTYPE CSubCommand::GetToolTip(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszInfotip) -> HRESULT {
     return E_NOTIMPL;
 }
@@ -45,12 +25,12 @@ auto STDMETHODCALLTYPE CSubCommand::EnumSubCommands(__RPC__deref_out_opt IEnumEx
 auto STDMETHODCALLTYPE CInfoSubCommand::GetTitle(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszName) -> HRESULT {
     std::wstring infoTitle;
 
-    if (_selectedItem.name.empty()) {
+    if (Environment::selectedItem.name.empty()) {
         infoTitle = L"None selected";
     } else {
-        infoTitle.append(_selectedItem.name).append(L" (");
+        infoTitle.append(Environment::selectedItem.name).append(L" (");
 
-        if (_selectedItem.isFolder) {
+        if (Environment::selectedItem.isFolder) {
             infoTitle += L"Folder)";
         } else {
             infoTitle += L"File)";
@@ -100,13 +80,13 @@ auto STDMETHODCALLTYPE CSelectSubCommand::GetState(__RPC__in_opt IShellItemArray
 
     if (itemCount != 1) {
         *pCmdState = ECS_HIDDEN;
-    } else if (_selectedItem.name.empty()) {
+    } else if (Environment::selectedItem.name.empty()) {
         *pCmdState = ECS_ENABLED;
     } else {
         Item currItem;
         CheckHr(currItem.ExtractItemAt(psiItemArray, 0));
 
-        *pCmdState = currItem.name == _selectedItem.name ? ECS_HIDDEN : ECS_ENABLED;
+        *pCmdState = currItem.name == Environment::selectedItem.name ? ECS_HIDDEN : ECS_ENABLED;
     }
 
     return S_OK;
@@ -122,7 +102,8 @@ auto STDMETHODCALLTYPE CSelectSubCommand::Invoke(__RPC__in_opt IShellItemArray *
         return E_UNEXPECTED;
     }
 
-    CheckHr(_selectedItem.ExtractItemAt(psiItemArray, 0));
+    CheckHr(Environment::selectedItem.ExtractItemAt(psiItemArray, 0));
+    Environment::FlushSelectedItem();
 
     return S_OK;
 }
@@ -139,11 +120,11 @@ auto CDiffSubCommand::ExtractItems(IShellItemArray *psiItemArray, Item &firstIte
     CheckHr(secondItem.ExtractItemAt(psiItemArray, 0));
 
     if (itemCount == 1) {
-        if (_selectedItem.name.empty()) {
+        if (Environment::selectedItem.name.empty()) {
             return S_FALSE;
         }
 
-        firstItem = _selectedItem;
+        firstItem = Environment::selectedItem;
     } else {
         CheckHr(firstItem.ExtractItemAt(psiItemArray, 1));
     }
@@ -201,7 +182,9 @@ auto STDMETHODCALLTYPE CDiffSubCommand::Invoke(__RPC__in_opt IShellItemArray *ps
         CloseHandle(pi.hThread);
         CloseHandle(pi.hProcess);
 
-        _selectedItem.name.clear();
+        Environment::selectedItem.name.clear();
+        Environment::FlushSelectedItem();
+
         return S_OK;
     }
 

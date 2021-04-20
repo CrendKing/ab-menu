@@ -24,6 +24,8 @@ auto STDMETHODCALLTYPE CCompareMenu::Initialize(__RPC__in_string LPCWSTR pszComm
         Environment::comparerArgs.clear();
     }
 
+    Environment::LoadSelectedItem();
+
     return S_OK;
 }
 

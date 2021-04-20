@@ -9,6 +9,9 @@ extern "C" auto WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRes
     if (dwReason == DLL_PROCESS_ATTACH && !Environment::Initialize(hInstance)) {
         return FALSE;
     }
+    if (dwReason == DLL_PROCESS_DETACH) {
+        Environment::Destroy();
+    }
 
     return g_module.DllMain(dwReason, lpReserved);
 }

@@ -30,6 +30,9 @@
     <ClCompile Include="src\environment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\resource.h">
@@ -47,6 +50,9 @@
     <ClInclude Include="src\environment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\compare_menu.rc">
@@ -62,7 +68,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Setting\Profile\Desktop\compare.ico">
+    <Image Include="src\compare.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

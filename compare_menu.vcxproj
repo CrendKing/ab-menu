@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\environment.cpp" />
+    <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\module.cpp" />
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\pch.cpp">
@@ -29,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\environment.h" />
+    <ClInclude Include="src\item.h" />
     <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\resource.h" />

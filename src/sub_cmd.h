@@ -1,5 +1,7 @@
 #pragma once
 
+#include "item.h"
+
 
 class ATL_NO_VTABLE CSubCommand
     : public ATL::CComObjectRoot
@@ -10,14 +12,6 @@ public:
     BEGIN_COM_MAP(CSubCommand)
         COM_INTERFACE_ENTRY(IExplorerCommand)
     END_COM_MAP()
-
-protected:
-    static struct Item {
-        std::wstring name;
-        bool isFolder = false;
-
-        auto ExtractItemAt(IShellItemArray *itemArray, int i) -> HRESULT;
-    } _selectedItem;
 
 private:
     auto STDMETHODCALLTYPE GetToolTip(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszInfotip) -> HRESULT override;
