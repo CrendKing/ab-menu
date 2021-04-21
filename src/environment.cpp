@@ -6,15 +6,20 @@ static constexpr const WCHAR *SELECTED_ITEM_OBJECT_NAME = L"Global\\CompareMenuS
 
 static std::array<WCHAR, MAX_PATH> g_quotedPathBuffer {};
 
-std::wstring Environment::modulePath;
-std::wstring Environment::comparerPath;
-std::wstring Environment::comparerArgs;
-Item Environment::selectedItem;
-HANDLE Environment::_hMapFile = nullptr;
-LPWSTR Environment::_mappingBuffer = nullptr;
+Environment::Environment() {
+    modulePath.resize(MAX_PATH);
+}
+
+Environment::~Environment() {
+    if (_mappingBuffer != nullptr) {
+        UnmapViewOfFile(_mappingBuffer);
+    }
+    if (_hMapFile != nullptr) {
+        CloseHandle(_hMapFile);
+    }
+}
 
 auto Environment::Initialize(HINSTANCE hInstance) -> bool {
-    modulePath.resize(MAX_PATH);
     if (GetModuleFileNameW(hInstance, modulePath.data(), static_cast<DWORD>(modulePath.size())) == 0) {
         return false;
     }
@@ -35,16 +40,7 @@ auto Environment::Initialize(HINSTANCE hInstance) -> bool {
     return true;
 }
 
-auto Environment::Destroy() -> void {
-    if (_mappingBuffer != nullptr) {
-        UnmapViewOfFile(_mappingBuffer);
-    }
-    if (_hMapFile != nullptr) {
-        CloseHandle(_hMapFile);
-    }
-}
-
-auto Environment::QuotePath(PCWSTR path) -> const WCHAR * {
+auto Environment::QuotePath(PCWSTR path) const -> const WCHAR * {
     if (path == nullptr) {
         return path;
     }
@@ -61,7 +57,7 @@ auto Environment::LoadSelectedItem() -> void {
     }
 }
 
-auto Environment::FlushSelectedItem() -> void {
+auto Environment::FlushSelectedItem() const -> void {
     if (selectedItem.name.empty()) {
         CopyMemory(_mappingBuffer, L"\0", sizeof(WCHAR));
     } else {

@@ -4,23 +4,23 @@
 
 
 struct Environment {
-    static auto Initialize(HINSTANCE hInstance) -> bool;
-    static auto Destroy() -> void;
+    static inline std::unique_ptr<Environment> INSTANCE;
 
-    static auto QuotePath(PCWSTR path) -> const WCHAR *;
-    static auto LoadSelectedItem() -> void;
-    static auto FlushSelectedItem() -> void;
+    Environment();
+    ~Environment();
 
-    static constexpr const WCHAR *COMPARER_ARGS_LEFT_PLACEHOLDER = L"%LEFT%";
-    static constexpr const WCHAR *COMPARER_ARGS_RIGHT_PLACEHOLDER = L"%RIGHT%";
+    auto Initialize(HINSTANCE hInstance) -> bool;
+    auto QuotePath(PCWSTR path) const -> const WCHAR *;
+    auto LoadSelectedItem() -> void;
+    auto FlushSelectedItem() const -> void;
 
-    static std::wstring modulePath;
-    static std::wstring comparerPath;
-    static std::wstring comparerArgs;
+    std::wstring modulePath;
+    std::wstring comparerPath;
+    std::wstring comparerArgs;
 
-    static Item selectedItem;
+    Item selectedItem;
 
 private:
-    static HANDLE _hMapFile;
-    static LPWSTR _mappingBuffer;
+    HANDLE _hMapFile = nullptr;
+    LPWSTR _mappingBuffer = nullptr;
 };

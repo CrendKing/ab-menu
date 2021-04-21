@@ -13,18 +13,18 @@ auto STDMETHODCALLTYPE CCompareMenu::Initialize(__RPC__in_string LPCWSTR pszComm
     ATL::CComVariant variant;
 
     if (SUCCEEDED(ppb->Read(REGISTRY_COMPARER_PATH_VALUE_NAME, &variant, nullptr))) {
-        Environment::comparerPath = variant.bstrVal;
+        Environment::INSTANCE->comparerPath = variant.bstrVal;
     } else {
-        Environment::comparerPath.clear();
+        Environment::INSTANCE->comparerPath.clear();
     }
 
     if (SUCCEEDED(ppb->Read(REGISTRY_COMPARER_ARGS_VALUE_NAME, &variant, nullptr))) {
-        Environment::comparerArgs = variant.bstrVal;
+        Environment::INSTANCE->comparerArgs = variant.bstrVal;
     } else {
-        Environment::comparerArgs.clear();
+        Environment::INSTANCE->comparerArgs.clear();
     }
 
-    Environment::LoadSelectedItem();
+    Environment::INSTANCE->LoadSelectedItem();
 
     return S_OK;
 }
@@ -34,7 +34,7 @@ auto STDMETHODCALLTYPE CCompareMenu::GetTitle(__RPC__in_opt IShellItemArray *psi
 }
 
 auto STDMETHODCALLTYPE CCompareMenu::GetIcon(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszIcon) -> HRESULT {
-    return SHStrDupW((Environment::modulePath + L",0").c_str(), ppszIcon);
+    return SHStrDupW((Environment::INSTANCE->modulePath + L",0").c_str(), ppszIcon);
 }
 
 auto STDMETHODCALLTYPE CCompareMenu::GetToolTip(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszInfotip) -> HRESULT {
@@ -46,7 +46,7 @@ auto STDMETHODCALLTYPE CCompareMenu::GetCanonicalName(__RPC__out GUID *pguidComm
 }
 
 auto STDMETHODCALLTYPE CCompareMenu::GetState(__RPC__in_opt IShellItemArray *psiItemArray, BOOL fOkToBeSlow, __RPC__out EXPCMDSTATE *pCmdState) -> HRESULT {
-    *pCmdState = Environment::comparerPath.empty() || Environment::comparerArgs.empty() ? ECS_DISABLED : ECS_ENABLED;
+    *pCmdState = Environment::INSTANCE->comparerPath.empty() || Environment::INSTANCE->comparerArgs.empty() ? ECS_DISABLED : ECS_ENABLED;
     return S_OK;
 }
 

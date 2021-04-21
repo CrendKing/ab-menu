@@ -3,6 +3,9 @@
 #include "environment.h"
 
 
+static constexpr const WCHAR *COMPARER_ARGS_LEFT_PLACEHOLDER = L"%LEFT%";
+static constexpr const WCHAR *COMPARER_ARGS_RIGHT_PLACEHOLDER = L"%RIGHT%";
+
 #define CheckHr(expr) { hr = (expr); if (FAILED(hr)) { return hr; } }
 
 auto STDMETHODCALLTYPE CSubCommand::GetToolTip(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszInfotip) -> HRESULT {
@@ -25,12 +28,12 @@ auto STDMETHODCALLTYPE CSubCommand::EnumSubCommands(__RPC__deref_out_opt IEnumEx
 auto STDMETHODCALLTYPE CInfoSubCommand::GetTitle(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszName) -> HRESULT {
     std::wstring infoTitle;
 
-    if (Environment::selectedItem.name.empty()) {
+    if (Environment::INSTANCE->selectedItem.name.empty()) {
         infoTitle = L"None selected";
     } else {
-        infoTitle.append(Environment::selectedItem.name).append(L" (");
+        infoTitle.append(Environment::INSTANCE->selectedItem.name).append(L" (");
 
-        if (Environment::selectedItem.isFolder) {
+        if (Environment::INSTANCE->selectedItem.isFolder) {
             infoTitle += L"Folder)";
         } else {
             infoTitle += L"File)";
@@ -69,7 +72,7 @@ auto STDMETHODCALLTYPE CSelectSubCommand::GetTitle(__RPC__in_opt IShellItemArray
 }
 
 auto STDMETHODCALLTYPE CSelectSubCommand::GetIcon(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszIcon) -> HRESULT {
-    return SHStrDupW((Environment::modulePath + L",0").c_str(), ppszIcon);
+    return SHStrDupW((Environment::INSTANCE->modulePath + L",0").c_str(), ppszIcon);
 }
 
 auto STDMETHODCALLTYPE CSelectSubCommand::GetState(__RPC__in_opt IShellItemArray *psiItemArray, BOOL fOkToBeSlow, __RPC__out EXPCMDSTATE *pCmdState) -> HRESULT {
@@ -80,13 +83,13 @@ auto STDMETHODCALLTYPE CSelectSubCommand::GetState(__RPC__in_opt IShellItemArray
 
     if (itemCount != 1) {
         *pCmdState = ECS_HIDDEN;
-    } else if (Environment::selectedItem.name.empty()) {
+    } else if (Environment::INSTANCE->selectedItem.name.empty()) {
         *pCmdState = ECS_ENABLED;
     } else {
         Item currItem;
         CheckHr(currItem.ExtractItemAt(psiItemArray, 0));
 
-        *pCmdState = currItem.name == Environment::selectedItem.name ? ECS_HIDDEN : ECS_ENABLED;
+        *pCmdState = currItem.name == Environment::INSTANCE->selectedItem.name ? ECS_HIDDEN : ECS_ENABLED;
     }
 
     return S_OK;
@@ -102,8 +105,8 @@ auto STDMETHODCALLTYPE CSelectSubCommand::Invoke(__RPC__in_opt IShellItemArray *
         return E_UNEXPECTED;
     }
 
-    CheckHr(Environment::selectedItem.ExtractItemAt(psiItemArray, 0));
-    Environment::FlushSelectedItem();
+    CheckHr(Environment::INSTANCE->selectedItem.ExtractItemAt(psiItemArray, 0));
+    Environment::INSTANCE->FlushSelectedItem();
 
     return S_OK;
 }
@@ -120,11 +123,11 @@ auto CDiffSubCommand::ExtractItems(IShellItemArray *psiItemArray, Item &firstIte
     CheckHr(secondItem.ExtractItemAt(psiItemArray, 0));
 
     if (itemCount == 1) {
-        if (Environment::selectedItem.name.empty()) {
+        if (Environment::INSTANCE->selectedItem.name.empty()) {
             return S_FALSE;
         }
 
-        firstItem = Environment::selectedItem;
+        firstItem = Environment::INSTANCE->selectedItem;
     } else {
         CheckHr(firstItem.ExtractItemAt(psiItemArray, 1));
     }
@@ -137,7 +140,7 @@ auto STDMETHODCALLTYPE CDiffSubCommand::GetTitle(__RPC__in_opt IShellItemArray *
 }
 
 auto CDiffSubCommand::GetIcon(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszIcon) -> HRESULT {
-    return SHStrDupW((Environment::comparerPath + L",0").c_str(), ppszIcon);
+    return SHStrDupW((Environment::INSTANCE->comparerPath + L",0").c_str(), ppszIcon);
 }
 
 auto STDMETHODCALLTYPE CDiffSubCommand::GetState(__RPC__in_opt IShellItemArray *psiItemArray, BOOL fOkToBeSlow, __RPC__out EXPCMDSTATE *pCmdState) -> HRESULT {
@@ -169,12 +172,12 @@ auto STDMETHODCALLTYPE CDiffSubCommand::Invoke(__RPC__in_opt IShellItemArray *ps
         return E_UNEXPECTED;
     }
 
-    std::wstring cmdline = Environment::comparerArgs;
-    ReplaceSubString(cmdline, Environment::COMPARER_ARGS_LEFT_PLACEHOLDER, Environment::QuotePath(firstItem.name.c_str()));
-    ReplaceSubString(cmdline, Environment::COMPARER_ARGS_RIGHT_PLACEHOLDER, Environment::QuotePath(secondItem.name.c_str()));
+    std::wstring cmdline = Environment::INSTANCE->comparerArgs;
+    ReplaceSubString(cmdline, COMPARER_ARGS_LEFT_PLACEHOLDER, Environment::INSTANCE->QuotePath(firstItem.name.c_str()));
+    ReplaceSubString(cmdline, COMPARER_ARGS_RIGHT_PLACEHOLDER, Environment::INSTANCE->QuotePath(secondItem.name.c_str()));
 
     cmdline.insert(0, L" ");
-    cmdline.insert(0, Environment::comparerPath);
+    cmdline.insert(0, Environment::INSTANCE->comparerPath);
 
     STARTUPINFOW si = { .cb = sizeof(si) };
     PROCESS_INFORMATION pi;
@@ -182,8 +185,8 @@ auto STDMETHODCALLTYPE CDiffSubCommand::Invoke(__RPC__in_opt IShellItemArray *ps
         CloseHandle(pi.hThread);
         CloseHandle(pi.hProcess);
 
-        Environment::selectedItem.name.clear();
-        Environment::FlushSelectedItem();
+        Environment::INSTANCE->selectedItem.name.clear();
+        Environment::INSTANCE->FlushSelectedItem();
 
         return S_OK;
     }
