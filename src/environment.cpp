@@ -53,14 +53,11 @@ auto Environment::QuotePath(PCWSTR path) const -> const WCHAR * {
 auto Environment::LoadSelectedItem() -> void {
     if (_mappingBuffer != nullptr) {
         selectedItem.name = _mappingBuffer;
-        selectedItem.isFolder = PathIsDirectoryW(_mappingBuffer);
+        selectedItem.isFolder = PathIsDirectoryW(_mappingBuffer) == FILE_ATTRIBUTE_DIRECTORY;
     }
 }
 
 auto Environment::FlushSelectedItem() const -> void {
-    if (selectedItem.name.empty()) {
-        CopyMemory(_mappingBuffer, L"\0", sizeof(WCHAR));
-    } else {
-        CopyMemory(_mappingBuffer, selectedItem.name.c_str(), selectedItem.name.size() * sizeof(WCHAR));
-    }
+    // include the tailing L'\0'
+    CopyMemory(_mappingBuffer, selectedItem.name.c_str(), (selectedItem.name.size() + 1) * sizeof(WCHAR));
 }
