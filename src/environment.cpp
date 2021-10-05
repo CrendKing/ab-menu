@@ -4,10 +4,32 @@
 
 static constexpr const WCHAR *SELECTED_ITEM_OBJECT_NAME = L"Global\\CompareMenuSelectedItem";
 
-static std::array<WCHAR, MAX_PATH> g_quotedPathBuffer {};
+auto Environment::ExtractItems(IShellItemArray *psiItemArray, Item &firstItem, Item &secondItem) -> HRESULT {
+    HRESULT hr;
+
+    DWORD itemCount;
+    CheckHr(psiItemArray->GetCount(&itemCount));
+    if (itemCount < 1 || itemCount > 2) {
+        return S_FALSE;
+    }
+
+    CheckHr(secondItem.ExtractItemAt(psiItemArray, 0));
+
+    if (itemCount == 1) {
+        if (Environment::INSTANCE->selectedItem.name.empty()) {
+            return S_FALSE;
+        }
+
+        firstItem = Environment::INSTANCE->selectedItem;
+    } else {
+        CheckHr(firstItem.ExtractItemAt(psiItemArray, 1));
+    }
+
+    return S_OK;
+}
 
 Environment::Environment() {
-    modulePath.resize(MAX_PATH);
+    menuIconPath.resize(MAX_PATH);
 }
 
 Environment::~Environment() {
@@ -20,9 +42,10 @@ Environment::~Environment() {
 }
 
 auto Environment::Initialize(HINSTANCE hInstance) -> bool {
-    if (GetModuleFileNameW(hInstance, modulePath.data(), static_cast<DWORD>(modulePath.size())) == 0) {
+    if (GetModuleFileNameW(hInstance, menuIconPath.data(), static_cast<DWORD>(menuIconPath.size())) == 0) {
         return false;
     }
+    menuIconPath.append(L",0");
 
     _hMapFile = OpenFileMappingW(FILE_MAP_WRITE | FILE_MAP_READ, FALSE, SELECTED_ITEM_OBJECT_NAME);
     if (_hMapFile == nullptr) {
@@ -38,16 +61,6 @@ auto Environment::Initialize(HINSTANCE hInstance) -> bool {
     }
 
     return true;
-}
-
-auto Environment::QuotePath(PCWSTR path) const -> const WCHAR * {
-    if (path == nullptr) {
-        return path;
-    }
-
-    wcscpy_s(g_quotedPathBuffer.data(), g_quotedPathBuffer.size(), path);
-    PathQuoteSpacesW(g_quotedPathBuffer.data());
-    return g_quotedPathBuffer.data();
 }
 
 auto Environment::LoadSelectedItem() -> void {

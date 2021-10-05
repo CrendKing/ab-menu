@@ -17,7 +17,8 @@ Note that a file can't be compared to a directory. So if the types mismatch, "Co
 * Unpack the archive.
 * Run install.bat to register the shell extension.
 * Open config.reg and edit the application path. `\` in the path needs to be escaped as `\\`.
-* The default arguments to the application is just the two paths. If a different one is needed, change the `ComparerArgs` value in config.reg.
+* The command line part should include both the full path to the comparer executable, and its arguments with `%LEFT%` and `%RIGHT%` placeholders.
+    * In the config.reg, we provided an example command line for [010 Editor's `-compare` parameter](https://www.sweetscape.com/010editor/manual/CommandLine.htm#-compare).
 
 ## Build
 

@@ -19,22 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\default.cpp" />
     <ClCompile Include="src\environment.cpp" />
+    <ClCompile Include="src\comparer_cmd.cpp" />
     <ClCompile Include="src\item.cpp" />
     <ClCompile Include="src\module.cpp" />
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\sub_cmd.cpp" />
+    <ClCompile Include="src\terminal_cmd.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\default.h" />
     <ClInclude Include="src\environment.h" />
+    <ClInclude Include="src\comparer_cmd.h" />
     <ClInclude Include="src\item.h" />
     <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\resource.h" />
-    <ClInclude Include="src\sub_cmd.h" />
+    <ClInclude Include="src\terminal_cmd.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\compare_menu.rc" />
@@ -52,7 +56,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries Condition="'$(Configuration)' == 'Debug'">true</UseDebugLibraries>
     <WholeProgramOptimization Condition="'$(Configuration)' == 'Release'">true</WholeProgramOptimization>
     <ConfigurationType>DynamicLibrary</ConfigurationType>

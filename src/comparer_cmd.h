@@ -3,30 +3,22 @@
 #include "default.h"
 
 
-class ATL_NO_VTABLE __declspec(uuid("59D49316-D3FD-425B-A175-41DEB301AB1F")) CCompareMenu
+class ATL_NO_VTABLE CComparerCommand
     : public ATL::CComObjectRoot
-    , public ATL::CComCoClass<CCompareMenu, &__uuidof(CCompareMenu)>
-    , public IInitializeCommand
+    , public ATL::CComCoClass<CComparerCommand>
     , public IDefaultExplorerCommand
     , public IDefaultEnumExplorerCommand {
 public:
-    DECLARE_REGISTRY_RESOURCEID(IDS_COMPARE_MENU)
-
     DECLARE_PROTECT_FINAL_CONSTRUCT()
 
-    BEGIN_COM_MAP(CCompareMenu)
-        COM_INTERFACE_ENTRY(IInitializeCommand)
+    BEGIN_COM_MAP(CComparerCommand)
         COM_INTERFACE_ENTRY(IExplorerCommand)
         COM_INTERFACE_ENTRY(IEnumExplorerCommand)
     END_COM_MAP()
 
 private:
-    // IInitializeCommand
-    auto STDMETHODCALLTYPE Initialize(__RPC__in_string LPCWSTR pszCommandName, __RPC__in_opt IPropertyBag *ppb) -> HRESULT override;
-
     // IExplorerCommand
     auto STDMETHODCALLTYPE GetTitle(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszName) -> HRESULT override;
-    auto STDMETHODCALLTYPE GetIcon(__RPC__in_opt IShellItemArray *psiItemArray, __RPC__deref_out_opt_string LPWSTR *ppszIcon) -> HRESULT override;
     auto STDMETHODCALLTYPE GetState(__RPC__in_opt IShellItemArray *psiItemArray, BOOL fOkToBeSlow, __RPC__out EXPCMDSTATE *pCmdState) -> HRESULT override;
     auto STDMETHODCALLTYPE GetFlags(__RPC__out EXPCMDFLAGS *pFlags) -> HRESULT override;
     auto STDMETHODCALLTYPE EnumSubCommands(__RPC__deref_out_opt IEnumExplorerCommand **ppEnum) -> HRESULT override;

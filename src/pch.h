@@ -5,8 +5,10 @@
 #pragma warning(disable: ALL_CODE_ANALYSIS_WARNINGS)
 
 #include <array>
+#include <format>
 #include <mutex>
 #include <string>
+#include <vector>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -23,6 +25,7 @@
 #include <atlcom.h>
 #include <atlctl.h>
 
+#include <shellapi.h>
 #include <shlobj.h>
 
 #pragma warning(pop)

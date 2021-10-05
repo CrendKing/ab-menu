@@ -7,13 +7,13 @@ class DiffMenuModule : public ATL::CAtlDllModuleT<DiffMenuModule> {
 
 extern "C" auto WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved) -> BOOL {
     if (dwReason == DLL_PROCESS_ATTACH) {
-        Environment::INSTANCE->INSTANCE = std::make_unique<Environment>();
-        if (!Environment::INSTANCE->INSTANCE->Initialize(hInstance)) {
+        Environment::INSTANCE = new Environment;
+        if (!Environment::INSTANCE->Initialize(hInstance)) {
             return FALSE;
         }
     }
     if (dwReason == DLL_PROCESS_DETACH) {
-        Environment::INSTANCE->INSTANCE.reset();
+        delete Environment::INSTANCE;
     }
 
     return g_module.DllMain(dwReason, lpReserved);

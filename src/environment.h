@@ -4,19 +4,25 @@
 
 
 struct Environment {
-    static inline std::unique_ptr<Environment> INSTANCE;
+    struct Comparer {
+        std::wstring name;
+        std::wstring cmdline;
+        std::wstring iconPath;
+    };
+
+    static auto ExtractItems(IShellItemArray *psiItemArray, Item &firstItem, Item &secondItem) -> HRESULT;
 
     Environment();
     ~Environment();
 
     auto Initialize(HINSTANCE hInstance) -> bool;
-    auto QuotePath(PCWSTR path) const -> const WCHAR *;
     auto LoadSelectedItem() -> void;
     auto FlushSelectedItem() const -> void;
 
-    std::wstring modulePath;
-    std::wstring comparerPath;
-    std::wstring comparerArgs;
+    static inline Environment *INSTANCE = nullptr;
+
+    std::wstring menuIconPath;
+    std::vector<Comparer> comparers;
 
     Item selectedItem;
 
@@ -24,3 +30,5 @@ private:
     HANDLE _hMapFile = nullptr;
     LPWSTR _mappingBuffer = nullptr;
 };
+
+#define CheckHr(expr) { hr = (expr); if (FAILED(hr)) { return hr; } }
