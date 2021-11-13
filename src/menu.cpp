@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "menu.h"
+
 #include "comparer_cmd.h"
 #include "environment.h"
 #include "terminal_cmd.h"

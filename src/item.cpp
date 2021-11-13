@@ -1,8 +1,7 @@
-#include "pch.h"
 #include "item.h"
 
+#include "environment.h"
 
-#define CheckHr(expr) { hr = (expr); if (FAILED(hr)) { return hr; } }
 
 Item::Item() {
     name.resize(MAX_PATH);

@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "comparer_cmd.h"
+
 #include "environment.h"
 #include "terminal_cmd.h"
 
@@ -31,8 +31,8 @@ auto STDMETHODCALLTYPE CComparerCommand::EnumSubCommands(__RPC__deref_out_opt IE
 }
 
 auto STDMETHODCALLTYPE CComparerCommand::Next(_In_ ULONG celt,
-                                                   _Out_writes_to_(celt, *pceltFetched) IExplorerCommand **pUICommand,
-                                                   _Out_opt_ _Deref_out_range_(0, celt) ULONG *pceltFetched) -> HRESULT {
+                                              _Out_writes_to_(celt, *pceltFetched) IExplorerCommand **pUICommand,
+                                              _Out_opt_ _Deref_out_range_(0, celt) ULONG *pceltFetched) -> HRESULT {
     if (_subMenuIndex >= Environment::INSTANCE->comparers.size()) {
         return E_FAIL;
     }

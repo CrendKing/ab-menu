@@ -31,4 +31,10 @@ private:
     LPWSTR _mappingBuffer = nullptr;
 };
 
-#define CheckHr(expr) { hr = (expr); if (FAILED(hr)) { return hr; } }
+#define CheckHr(expr)     \
+    {                     \
+        hr = (expr);      \
+        if (FAILED(hr)) { \
+            return hr;    \
+        }                 \
+    }

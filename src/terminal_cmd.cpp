@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "terminal_cmd.h"
+
 #include "environment.h"
 
 
@@ -98,7 +98,7 @@ auto STDMETHODCALLTYPE CDiffCommand::GetState(__RPC__in_opt IShellItemArray *psi
 }
 
 static auto ReplaceSubString(std::wstring &str, const WCHAR *toFind, const WCHAR *replaceWith) {
-    const size_t replaceLen = wcslen(toFind);
+    const size_t replaceLen = std::char_traits<WCHAR>::length(toFind);
 
     std::size_t pos;
     while ((pos = str.find(toFind)) != std::string::npos) {

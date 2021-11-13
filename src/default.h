@@ -18,9 +18,7 @@ protected:
     ULONG _subMenuIndex;
 
 private:
-    auto STDMETHODCALLTYPE Next(_In_ ULONG celt,
-                                _Out_writes_to_(celt, *pceltFetched) IExplorerCommand **pUICommand,
-                                _Out_opt_ _Deref_out_range_(0, celt) ULONG *pceltFetched) -> HRESULT override;
+    auto STDMETHODCALLTYPE Next(_In_ ULONG celt, _Out_writes_to_(celt, *pceltFetched) IExplorerCommand **pUICommand, _Out_opt_ _Deref_out_range_(0, celt) ULONG *pceltFetched) -> HRESULT override;
     auto STDMETHODCALLTYPE Skip(ULONG celt) -> HRESULT override;
     auto STDMETHODCALLTYPE Reset() -> HRESULT override;
     auto STDMETHODCALLTYPE Clone(__RPC__deref_out_opt IEnumExplorerCommand **ppenum) -> HRESULT override;
