@@ -4,13 +4,13 @@
 
 
 struct Environment {
-    struct Comparer {
+    struct App {
         std::wstring name;
         std::wstring cmdline;
         std::wstring iconPath;
     };
 
-    static auto ExtractItems(IShellItemArray *psiItemArray, Item &firstItem, Item &secondItem) -> HRESULT;
+    static auto ExtractItems(IShellItemArray *psiItemArray, ABItem &firstItem, ABItem &secondItem) -> HRESULT;
 
     Environment();
     ~Environment();
@@ -22,9 +22,9 @@ struct Environment {
     static inline Environment *INSTANCE = nullptr;
 
     std::wstring menuIconPath;
-    std::vector<Comparer> comparers;
+    std::vector<App> apps;
 
-    Item selectedItem;
+    ABItem selectedItem;
 
 private:
     HANDLE _hMapFile = nullptr;

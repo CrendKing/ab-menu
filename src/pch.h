@@ -10,8 +10,7 @@
 #include <string>
 #include <vector>
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include "min_windows.h"
 
 #define _ATL_APARTMENT_THREADED
 

@@ -1,7 +1,7 @@
 #include "environment.h"
 
 
-class DiffMenuModule : public ATL::CAtlDllModuleT<DiffMenuModule> {
+class ABMenuModule : public ATL::CAtlDllModuleT<ABMenuModule> {
 } g_module;
 
 extern "C" auto WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved) -> BOOL {

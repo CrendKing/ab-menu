@@ -3,18 +3,18 @@
 #include "default.h"
 
 
-class ATL_NO_VTABLE __declspec(uuid("59D49316-D3FD-425B-A175-41DEB301AB1F")) CCompareMenu
+class ATL_NO_VTABLE __declspec(uuid("59D49316-D3FD-425B-A175-41DEB301AB1F")) CABMenu
     : public ATL::CComObjectRoot
-    , public ATL::CComCoClass<CCompareMenu, &__uuidof(CCompareMenu)>
+    , public ATL::CComCoClass<CABMenu, &__uuidof(CABMenu)>
     , public IInitializeCommand
     , public IDefaultExplorerCommand
     , public IDefaultEnumExplorerCommand {
 public:
-    DECLARE_REGISTRY_RESOURCEID(IDS_COMPARE_MENU)
+    DECLARE_REGISTRY_RESOURCEID(IDS_AB_MENU)
 
     DECLARE_PROTECT_FINAL_CONSTRUCT()
 
-    BEGIN_COM_MAP(CCompareMenu)
+    BEGIN_COM_MAP(CABMenu)
         COM_INTERFACE_ENTRY(IInitializeCommand)
         COM_INTERFACE_ENTRY(IExplorerCommand)
         COM_INTERFACE_ENTRY(IEnumExplorerCommand)

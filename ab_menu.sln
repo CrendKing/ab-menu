@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{4E19C66E-E508-4D7A-876B-6B1D945B7F54}") = "compare_menu", "compare_menu.vcxproj", "{57F63F56-0E76-492D-B6F6-AE1D306D4057}"
+Project("{4E19C66E-E508-4D7A-876B-6B1D945B7F54}") = "ab_menu", "ab_menu.vcxproj", "{57F63F56-0E76-492D-B6F6-AE1D306D4057}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

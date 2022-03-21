@@ -3,11 +3,15 @@
 #include "environment.h"
 
 
-Item::Item() {
-    name.resize(MAX_PATH);
+ABItem::ABItem() {
+    name.reserve(MAX_PATH);
 }
 
-auto Item::ExtractItemAt(IShellItemArray *itemArray, int i) -> HRESULT {
+ABItem::ABItem(IShellItemArray *itemArray, int i) {
+    ExtractShellItemAt(itemArray, i);
+}
+
+auto ABItem::ExtractShellItemAt(IShellItemArray *itemArray, int i) -> HRESULT {
     HRESULT hr;
 
     IShellItem *shellItem;

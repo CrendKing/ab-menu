@@ -1,12 +1,11 @@
 #pragma once
 
-#include "pch.h"
 
+struct ABItem {
+    ABItem();
+    ABItem(IShellItemArray *itemArray, int i);
 
-struct Item {
-    Item();
-
-    auto ExtractItemAt(IShellItemArray *itemArray, int i) -> HRESULT;
+    auto ExtractShellItemAt(IShellItemArray *itemArray, int i) -> HRESULT;
 
     std::wstring name;
     bool isFolder = false;

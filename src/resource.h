@@ -1,8 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by compare_menu.rc
+// Used by ab_menu.rc
 //
-#define IDS_COMPARE_MENU                 100
+#define IDS_AB_MENU                      100
 #define IDI_ICON                         101
 
 // Next default values for new objects

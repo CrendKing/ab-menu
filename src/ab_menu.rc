@@ -50,7 +50,7 @@ END
 // REGISTRY
 //
 
-IDS_COMPARE_MENU        REGISTRY                "compare_menu.rgs"
+IDS_AB_MENU             REGISTRY                "ab_menu.rgs"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ IDS_COMPARE_MENU        REGISTRY                "compare_menu.rgs"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON                ICON                    "src\compare.ico"
+IDI_ICON                ICON                    "src\\ab.ico"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////

@@ -1,9 +1,9 @@
 #include "environment.h"
 
 
-static constexpr const WCHAR *SELECTED_ITEM_OBJECT_NAME = L"Global\\CompareMenuSelectedItem";
+static constexpr const WCHAR *SELECTED_ITEM_OBJECT_NAME = L"Global\\ABMenuSelectedItem";
 
-auto Environment::ExtractItems(IShellItemArray *psiItemArray, Item &firstItem, Item &secondItem) -> HRESULT {
+auto Environment::ExtractItems(IShellItemArray *psiItemArray, ABItem &firstItem, ABItem &secondItem) -> HRESULT {
     HRESULT hr;
 
     DWORD itemCount;
@@ -12,7 +12,7 @@ auto Environment::ExtractItems(IShellItemArray *psiItemArray, Item &firstItem, I
         return S_FALSE;
     }
 
-    CheckHr(secondItem.ExtractItemAt(psiItemArray, 0));
+    CheckHr(secondItem.ExtractShellItemAt(psiItemArray, 0));
 
     if (itemCount == 1) {
         if (Environment::INSTANCE->selectedItem.name.empty()) {
@@ -21,7 +21,7 @@ auto Environment::ExtractItems(IShellItemArray *psiItemArray, Item &firstItem, I
 
         firstItem = Environment::INSTANCE->selectedItem;
     } else {
-        CheckHr(firstItem.ExtractItemAt(psiItemArray, 1));
+        CheckHr(firstItem.ExtractShellItemAt(psiItemArray, 1));
     }
 
     return S_OK;

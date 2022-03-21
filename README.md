@@ -1,24 +1,29 @@
-# Compare Menu
+# AB Menu
 
-A Windows context menu shell extension that proxies general comparison commands to any diff application.
+A Windows context menu shell extension that proxies user configured commands accepting exactly two launch arguments (thus "AB" in the name) to any application.
 
-While many popular comparison applications such as Beyond Compare come with their own such shell extensions help improve user experience, there are good ones that still do not have. Rather than requesting each developer team to come up with their own solution, why not build a general one that can work everywhere as long as their take standard input arguments?
+Among the examples of such applications are comparison tools, file copy tools and text editors for side-by-side editing.
 
-The concept of such context menu is simple:
+If the application does not come with its own shell extension, instead of having to manually type in terminal or create shortcut of it, user of this shell extension can create template of launch command with the two argument placeholders, select the item(s) in Windows Explorer and launch.
 
-* When exactly two files or two directories are selected, a "Compare Two" command becomes available, sending the two paths to the configured diff application.
-* If only one object is selected for the first time, the menu remembers its path.
-* If another object is selected afterwards, the menu either sends both paths to the diff application and reset, or replaces the previously remembered path, depending on user choice.
+There are multiple ways to select items:
 
-Note that a file can't be compared to a directory. So if the types mismatch, "Compare Two" won't be available, and the only option for single select mode is replacement.
+* When exactly two items (both files or both folders but not mixed) are selected, the shell extension will display the value of each argument placeholder and launch app.
+* When only one item is selected for the first time, the shell extension remembers its path.
+* When a different object is selected afterwards, the shell extension either launch app with the two arguments, or replaces the previously remembered first item, depending on user choice.
+
+Again, the two items must be both files or both folders but not mixed.
 
 ## Install
 
 * Unpack the archive.
 * Run install.bat to register the shell extension.
-* Open config.reg and edit the application path. `\` in the path needs to be escaped as `\\`.
-* The command line part should include both the full path to the comparer executable, and its arguments with `%LEFT%` and `%RIGHT%` placeholders.
-    * In the config.reg, we provided an example command line for [010 Editor's `-compare` parameter](https://www.sweetscape.com/010editor/manual/CommandLine.htm#-compare).
+* config.reg has some examples of user configurable commands. You can edit it and import into registry. The first selected item replaces the `%FIRST%` placeholder, while the second one replaces `%SECOND%`. `\` in the path needs to be escaped as `\\`.
+
+## Uninstall
+
+* Run uninstall.bat to de-register the shell extension.
+* Open Registry Editor and remove `HKEY_CURRENT_USER\Software\AB Menu`.
 
 ## Build
 
@@ -26,11 +31,14 @@ A build script `build.ps1` is included to automate the process. It obtains depen
 
 ## Screenshots
 
-Compare Two
-![Compare Two](screenshots/compare_two.webp)
+When two items are selected:
 
-Select First
+![Two selected](screenshots/two_selected.webp)
+
+When the first item is selected:
+
 ![Select First](screenshots/select_first.webp)
 
-Select Second
+After the first item is confirmed, when the second item is selected:
+
 ![Select Second](screenshots/select_second.webp)
