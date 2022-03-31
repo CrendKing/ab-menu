@@ -4,7 +4,7 @@
 #include "environment.h"
 
 
-static constexpr const WCHAR *REGISTRY_ab_menu_KEY_PREFIX = LR"(SOFTWARE\AB Menu)";
+static constexpr const WCHAR *REGISTRY_AB_MENU_KEY_PREFIX = LR"(SOFTWARE\AB Menu)";
 
 OBJECT_ENTRY_AUTO(__uuidof(CABMenu), CABMenu)
 
@@ -12,7 +12,7 @@ auto STDMETHODCALLTYPE CABMenu::Initialize(__RPC__in_string LPCWSTR pszCommandNa
     if (Environment::INSTANCE->apps.empty()) {
         HKEY registryKey;
 
-        RegCreateKeyExW(HKEY_CURRENT_USER, REGISTRY_ab_menu_KEY_PREFIX, 0, nullptr, 0, KEY_QUERY_VALUE, nullptr, &registryKey, nullptr);
+        RegCreateKeyExW(HKEY_CURRENT_USER, REGISTRY_AB_MENU_KEY_PREFIX, 0, nullptr, 0, KEY_QUERY_VALUE, nullptr, &registryKey, nullptr);
 
         LSTATUS regRet = ERROR_SUCCESS;
         for (int i = 0; regRet == ERROR_SUCCESS; ++i) {

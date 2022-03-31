@@ -1,7 +1,7 @@
 #include "environment.h"
 
 
-static constexpr const WCHAR *SELECTED_ITEM_OBJECT_NAME = L"Global\\ABMenuSelectedItem";
+static constexpr const WCHAR *SELECTED_ITEM_OBJECT_NAME = LR"(Global\ABMenuSelectedItem)";
 
 auto Environment::ExtractItems(IShellItemArray *psiItemArray, ABItem &firstItem, ABItem &secondItem) -> HRESULT {
     HRESULT hr;

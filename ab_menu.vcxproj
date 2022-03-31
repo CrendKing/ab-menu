@@ -91,7 +91,7 @@
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
       <FunctionLevelLinking Condition="'$(Configuration)' == 'Release'">true</FunctionLevelLinking>
       <IntrinsicFunctions Condition="'$(Configuration)' == 'Release'">true</IntrinsicFunctions>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization Condition="'$(Configuration)' == 'Debug'">Disabled</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
