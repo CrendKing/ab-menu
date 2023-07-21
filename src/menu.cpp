@@ -32,6 +32,7 @@ auto STDMETHODCALLTYPE CABMenu::Initialize(__RPC__in_string LPCWSTR pszCommandNa
 
         RegCloseKey(registryKey);
 
+        std::sort(Environment::INSTANCE->apps.begin(), Environment::INSTANCE->apps.end());
         Environment::INSTANCE->LoadSelectedItem();
     }
 

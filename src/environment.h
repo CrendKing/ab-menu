@@ -8,6 +8,8 @@ struct Environment {
         std::wstring name;
         std::wstring cmdline;
         std::wstring iconPath;
+
+        auto operator<(const App &other) -> bool { return name < other.name; }
     };
 
     static auto ExtractItems(IShellItemArray *psiItemArray, ABItem &firstItem, ABItem &secondItem) -> HRESULT;

@@ -4,6 +4,7 @@
 #pragma warning(push)
 #pragma warning(disable: ALL_CODE_ANALYSIS_WARNINGS)
 
+#include <algorithm>
 #include <array>
 #include <format>
 #include <mutex>
