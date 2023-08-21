@@ -23,9 +23,9 @@ auto STDMETHODCALLTYPE CABMenu::Initialize(__RPC__in_string LPCWSTR pszCommandNa
 
             regRet = RegEnumValueW(registryKey, i, regValueName.data(), &regNameSize, nullptr, nullptr, regValueValue.data(), &regValueSize);
             if (regRet == ERROR_SUCCESS && regValueSize > 0) {
-                const WCHAR *regValueStr = reinterpret_cast<const WCHAR *>(regValueValue.data());
-                int cmdArgc;
-                const std::wstring iconPath = std::format(L"{},0", CommandLineToArgvW(regValueStr, &cmdArgc)[0]);
+                WCHAR *regValueStr = reinterpret_cast<WCHAR *>(regValueValue.data());
+                PathRemoveArgsW(regValueStr);
+                const std::wstring iconPath = std::format(L"{},0", regValueStr);
                 Environment::INSTANCE->apps.emplace_back(regValueName.data(), regValueStr, iconPath);
             }
         }
